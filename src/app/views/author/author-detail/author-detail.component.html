@@ -1,0 +1,85 @@
+@if(author){
+<h2 class="title">
+  {{ author.name }}
+</h2>
+<mat-card>
+  <mat-card-content>
+    <section class="flex w-full flex-wrap">
+      <div class="sm:w-[80%] w-full pr-3">
+        <h3>Biografía</h3>
+        <p class="w-full break-words">{{ author.biography }}</p>
+      </div>
+      <aside
+        class="sm:w-[20%] box-border p-[7px] w-full border-purple-300 border-4 rounded-xl flex justify-center items-center"
+      >
+        <div>
+          <div>
+            <h4>Nacionalidad:</h4>
+            <span>{{ author.country.name }}</span>
+          </div>
+          <div>
+            <h4>Fecha nacimiento:</h4>
+            <span>{{ author.birthDate | date : "dd/MM/yyyy" }}</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </mat-card-content>
+</mat-card>
+<mat-card class="mt-3">
+  <mat-card-content>
+    <section class="flex w-full flex-wrap">
+      <h3 class="w-full">Libros</h3>
+      <div class="w-full mt-2">
+        @if (author.books.length!=0) { @for (book of author.books; track $index)
+        {
+        <mat-chip
+          class="mb-2 mr-2 book"
+          [title]="'Ver mas de ' + book.title"
+          [routerLink]="'/books/detail/' + book.id"
+          >{{ book.title }}</mat-chip
+        >
+
+        } } @else {
+        <p class="w-full">No hay libros registrados</p>
+        }
+      </div>
+    </section>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="mt-3">
+  <mat-card-content>
+    <section class="flex w-full justify-end">
+      <button
+        class="ml-[5px] mt-[5px]"
+        mat-raised-button
+        type="button"
+        routerLink="/authors"
+      >
+        Cerrar
+      </button>
+      @if(canEdit){
+      <button
+        mat-raised-button
+        color="warn"
+        class="ml-[5px] mt-[5px]"
+        type="button"
+        (click)="delete()"
+      >
+        Borrar
+      </button>
+      <button
+        mat-raised-button
+        class="ml-[5px] mt-[5px]"
+        type="button"
+        [routerLink]="'/authors/edit/' + author.id"
+        color="primary"
+      >
+        Editar
+      </button>
+      }
+    </section>
+  </mat-card-content>
+</mat-card>
+}

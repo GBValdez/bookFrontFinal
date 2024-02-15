@@ -1,0 +1,157 @@
+@if(canEdit){
+<section class="flex justify-between">
+  <h2 class="title">Libros</h2>
+  <button mat-raised-button routerLink="create">Crear Libro</button>
+</section>
+} @if(bookList.length>0){
+<mat-card class="w-full">
+  <mat-card-content>
+    <form
+      (ngSubmit)="searchBooks()"
+      class="flex sm:justify-between justify-center flex-wrap w-full"
+      [formGroup]="form"
+    >
+      <mat-form-field class="sm:w-[30%] w-full">
+        <mat-label>Titulo </mat-label>
+        <input matInput placeholder="Titulo" formControlName="titleCont" />
+      </mat-form-field>
+      <mat-form-field class="sm:w-[30%] w-full">
+        <mat-label>Fecha de creación</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input
+            matStartDate
+            placeholder="Dia de inicio"
+            formControlName="dateCreationGreat"
+          />
+          <input
+            matEndDate
+            placeholder="Dia final"
+            formControlName="dateCreationSmall"
+          />
+        </mat-date-range-input>
+        <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+      <app-input-autocomplete
+        class="sm:w-[30%] w-full"
+        formControlName="languageId"
+        [options]="languagesOpts"
+        >Idioma</app-input-autocomplete
+      >
+      <mat-form-field class="sm:w-[30%] w-full">
+        <mat-label>Numero de paginas </mat-label>
+        <input
+          appOnlyNumberInput
+          matInput
+          placeholder="Numero de paginas"
+          formControlName="numPages"
+        />
+      </mat-form-field>
+      <mat-form-field class="sm:w-[30%] w-full">
+        <mat-label>Categoría</mat-label>
+        <mat-select formControlName="categoriesId" multiple>
+          @for (category of categoriesOpts; track category) {
+          <mat-option [value]="category.id">{{ category.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <div class="flex justify-end w-full flex-wrap">
+        <button
+          mat-raised-button
+          class="ml-[5px] mt-[5px]"
+          type="button"
+          (click)="cleanFilters()"
+        >
+          Limpiar
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          class="ml-[5px] mt-[5px]"
+          type="submit"
+          [disabled]="form.invalid"
+        >
+          Buscar
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<section class="flex flex-wrap sm:justify-between justify-center">
+  @for (book of bookList; track $index) {
+  <mat-card
+    style="cursor: pointer"
+    class="sm:w-[45%] w-full m-[5px]"
+    [matMenuTriggerFor]="menu"
+  >
+    <mat-card-header>
+      <mat-card-title
+        ><h3>
+          {{ book.title }}
+        </h3></mat-card-title
+      >
+    </mat-card-header>
+    <mat-card-content>
+      <div class="flex flex-wrap">
+        <div class="w-[120px]">
+          <h4>Idioma:</h4>
+          {{ book.language.name }}
+        </div>
+        <div class="w-[170px]">
+          <h4>Fecha de creación:</h4>
+          {{ book.dateCreation | date : "dd/MM/yyyy" }}
+        </div>
+        <div class="w-[160px]">
+          <h4>Numero de paginas:</h4>
+          {{ book.numPages }}
+        </div>
+      </div>
+      <div class="w-full mt-1 overflow-x-auto box-border h-[32px]">
+        @for (category of book.categories; track $index) {
+        <mat-chip class="mr-2 sm:mb-0 mb-2"> {{ category.name }}</mat-chip>
+
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-menu #menu="matMenu" xPosition="after">
+    <button mat-menu-item [routerLink]="'detail/' + book.id">
+      <mat-icon>remove_red_eye</mat-icon>
+      <span>Ver mas</span>
+    </button>
+    @if(canEdit){
+    <button mat-menu-item [routerLink]="'edit/' + book.id">
+      <mat-icon>edit</mat-icon>
+      <span>Editar</span>
+    </button>
+    <button mat-menu-item (click)="deleteBook(book)">
+      <mat-icon>delete</mat-icon>
+      <span>Borrar</span>
+    </button>
+    }
+  </mat-menu>
+  }
+</section>
+<footer>
+  <mat-paginator
+    [length]="sizeBooks"
+    [pageSize]="10"
+    [pageIndex]="indexPage"
+    [pageSizeOptions]="[5, 10, 15, 20]"
+    class="rounded-xl"
+    (page)="changePagination($event)"
+  >
+  </mat-paginator>
+</footer>
+} @else{
+<img
+  class="sm:w-[40%] w-[90%] left-0 right-0 mx-auto rounded-3xl"
+  src="./assets/img/noFound.png"
+  alt=""
+/>
+}

@@ -1,0 +1,203 @@
+@if(book){
+<h2 class="title">
+  {{ book.title }}
+</h2>
+<mat-card>
+  <mat-card-content>
+    <section class="flex w-full flex-wrap">
+      <div class="sm:w-[80%] w-full pr-3">
+        <h3>Descripción</h3>
+        <p class="w-full break-words">{{ book.description }}</p>
+      </div>
+      <aside
+        class="sm:w-[20%] box-border p-[7px] w-full border-purple-300 border-4 rounded-xl flex justify-center items-center"
+      >
+        <div>
+          <div>
+            <h4>Idioma:</h4>
+            <span>{{ book.language.name }}</span>
+          </div>
+          <div>
+            <h4>Dia de creación:</h4>
+            <span>{{ book.dateCreation | date : "dd/MM/yyyy" }}</span>
+          </div>
+          <div>
+            <h4>Num de paginas:</h4>
+            <span>{{ book.numPages }}</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </mat-card-content>
+</mat-card>
+<mat-card class="mt-3">
+  <mat-card-content>
+    <section class="flex w-full flex-wrap">
+      <h3 class="w-full">Autores</h3>
+      <div class="w-full mt-2">
+        @if (book.authors.length!=0) { @for (author of book.authors; track
+        $index) {
+        <mat-chip
+          class="mb-2 mr-2 book"
+          [title]="'Ver mas de ' + book.title"
+          [routerLink]="'/authors/detail/' + author.id"
+          >{{ author.name }}</mat-chip
+        >
+
+        } } @else {
+        <p class="w-full">No hay autores registrados</p>
+        }
+      </div>
+    </section>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="mt-3">
+  <mat-card-content>
+    <section class="flex w-full flex-wrap">
+      <h3 class="w-full">Categorías</h3>
+      <div class="w-full mt-2">
+        @if (book.categories.length!=0) { @for (category of book.categories;
+        track $index) {
+        <mat-chip class="mb-2 mr-2 book" [title]="'Ver mas de ' + book.title">{{
+          category.name
+        }}</mat-chip>
+
+        } } @else {
+        <p class="w-full">No hay autores registrados</p>
+        }
+      </div>
+    </section>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="mt-3">
+  <mat-card-content>
+    <h3 class="w-full">Comentarios</h3>
+
+    <section class="flex w-full flex-wrap max-h-[70vh] overflow-y-auto">
+      <div class="w-full mt-2">
+        @if (comments.length!=0) { @for (comment of comments; track $index) {
+        <div>
+          <h4 class="flex items-center">
+            <span class="mr-2">
+              {{ comment.user.userName }}
+            </span>
+            @if(comment.id!=-1){
+            <mat-icon class="cursor-pointer" [matMenuTriggerFor]="menu"
+              >edit</mat-icon
+            >
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="clickButtonEditComment(comment)">
+                <mat-icon>edit</mat-icon>
+                <span>Editar</span>
+              </button>
+              <button mat-menu-item (click)="deleteComment(comment)">
+                <mat-icon>delete</mat-icon>
+                <span>Borrar</span>
+              </button>
+            </mat-menu>
+            }
+          </h4>
+          <p class="break-words">{{ comment.content }}</p>
+        </div>
+
+        }
+        @if (indexComments<numPageComments) {
+          <div class="my-2 w-full flex justify-center">
+            <button mat-raised-button (click)="moreComments()">
+              Ver mas comentarios
+            </button>
+          </div>
+        }
+      } @else {
+        <p class="w-full">No hay comentarios registrados</p>
+        }
+      </div>
+    </section>
+    @if(canComment){
+    <section>
+      <form [formGroup]="form" (ngSubmit)="sendComment()">
+        <mat-form-field class="w-full">
+          <mat-label>Escribe un comentario</mat-label>
+          <textarea
+            matInput
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="2"
+            cdkAutosizeMaxRows="5"
+            [maxLength]="600"
+            #textArea
+            formControlName="content"
+          ></textarea>
+          <mat-error>Si desea comentar llene el campo </mat-error>
+          <mat-hint align="end"
+            >{{ textArea.value.trim().length }}/600</mat-hint
+          >
+        </mat-form-field>
+        <div class="flex justify-end">
+          @if (idCommentEdit) {
+            <button
+            mat-raised-button
+            class="ml-[5px] mt-[5px]"
+            type="button"
+            (click)="cancelEditComment()"
+          >
+            Cancelar
+          </button>
+          }
+         
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            class="ml-[5px] mt-[5px]"
+            [disabled]="form.invalid"
+          >
+            Comentar
+          </button>
+        </div>
+      </form>
+    </section>
+  }
+  @else {
+  <p class="w-full text-gray-500 font-bold text-lg text-center mt-2">Inicia sesión o regístrate para comentar</p>
+  }
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="mt-3">
+  <mat-card-content>
+    <section class="flex w-full justify-end">
+      <button
+        class="ml-[5px] mt-[5px]"
+        mat-raised-button
+        type="button"
+        routerLink="/books"
+      >
+        Cerrar
+      </button>
+      @if(canEdit){
+        <button
+        mat-raised-button
+        color="warn"
+        class="ml-[5px] mt-[5px]"
+        type="button"
+        (click)="deleteBook()"
+      >
+        Borrar
+      </button>
+      <button
+        mat-raised-button
+        class="ml-[5px] mt-[5px]"
+        type="button"
+        [routerLink]="'/books/edit/' + book.id"
+        color="primary"
+      >
+        Editar
+      </button>
+      }
+     
+    </section>
+  </mat-card-content>
+</mat-card>
+}

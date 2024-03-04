@@ -8,6 +8,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { UserService } from '@services/user.service';
@@ -23,6 +24,7 @@ import Swal from 'sweetalert2';
     MatButtonModule,
     MatCardModule,
     RouterModule,
+    MatIconModule,
   ],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.scss',

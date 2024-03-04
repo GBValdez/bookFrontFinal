@@ -8,6 +8,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { UserService } from '@services/user.service';
 import Swal from 'sweetalert2';
@@ -21,6 +22,7 @@ import Swal from 'sweetalert2';
     MatFormFieldModule,
     MatButtonModule,
     MatDialogModule,
+    MatIconModule,
   ],
   templateUrl: './user-create.component.html',
   styleUrl: './user-create.component.scss',

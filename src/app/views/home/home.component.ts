@@ -19,6 +19,7 @@ import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
 import { UserCreateComponent } from '@pages/user/user-create/user-create.component';
 import { ForgotPasswordComponent } from '@pages/user/forgot-password/forgot-password.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-home',
@@ -32,6 +33,7 @@ import { ForgotPasswordComponent } from '@pages/user/forgot-password/forgot-pass
     ReactiveFormsModule,
     UserCreateComponent,
     ForgotPasswordComponent,
+    MatIconModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',

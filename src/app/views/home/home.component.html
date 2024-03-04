@@ -32,15 +32,30 @@
           <input
             matInput
             type="password"
-            Biografía="Contraseña"
+            placeholder="Contraseña"
             formControlName="password"
+            #passwordInput
           />
+          <button
+            matSuffix
+            mat-icon-button
+            type="button"
+            (click)="
+              passwordInput.type =
+                passwordInput.type == 'text' ? 'password' : 'text'
+            "
+          >
+            <mat-icon>{{
+              passwordInput.type == "text" ? "visibility_off" : "visibility"
+            }}</mat-icon>
+          </button>
           <mat-error>El campo es <strong>requerido</strong></mat-error>
         </mat-form-field>
-
-        <button mat-raised-button color="primary" type="submit">
-          Iniciar Sesión
-        </button>
+        <div class="w-full flex justify-center">
+          <button mat-raised-button color="primary" type="submit">
+            Iniciar Sesión
+          </button>
+        </div>
       </form>
       <br />
       <p

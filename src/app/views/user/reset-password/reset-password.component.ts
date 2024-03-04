@@ -36,13 +36,14 @@ export class ResetPasswordComponent implements OnInit {
     if (password === confirmPassword) return null;
     else return { noIgual: true };
   };
+  symbols: string = '@$!%*?&#';
   form = this.fb.group(
     {
       password: [
         '',
         [
           Validators.pattern(
-            '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$'
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/
           ),
           Validators.required,
         ],

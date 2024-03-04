@@ -33,6 +33,8 @@ export class UserCreateComponent {
     private userSvc: UserService,
     private dialogRef: MatDialogRef<UserCreateComponent>
   ) {}
+  symbols: string = '@$!%*?&#';
+
   form: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: [
@@ -40,7 +42,7 @@ export class UserCreateComponent {
       [
         Validators.required,
         Validators.pattern(
-          '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$'
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/
         ),
       ],
     ],

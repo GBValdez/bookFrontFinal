@@ -49,8 +49,9 @@
     @if(form.get('password')!.hasError('pattern')){
     <p class="text-red-500">
       La contraseña debe contener: 8 caracteres de longitud, una letra mayúscula
-      , una letra minúscula, al menos un numero, un carácter especial (por
-      ejemplo, !#$%^&*).
+      , una letra minúscula, al menos un numero, un carácter especial ({{
+        symbols
+      }}).
     </p>
     }
     <section class="flex justify-end w-full flex-wrap">
